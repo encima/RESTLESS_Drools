@@ -38,6 +38,7 @@ import org.restlet.Restlet;
 import org.restlet.routing.Router;
 
 import com.encima.api.endpoints.DroolsAdderResource;
+import com.encima.api.endpoints.DroolsCloserResource;
 import com.encima.api.endpoints.DroolsFirerResource;
 import com.encima.api.endpoints.DroolsRunnerResource;
 
@@ -53,12 +54,12 @@ public class RESTApplication extends Application {
         Router router = new Router(getContext());
 
         // Defines only one route
- 
-//        router.attach("/hello", HelloWorldResource.class);
         router.attach("/drools/start", DroolsRunnerResource.class);
+        router.attach("/drools/stop", DroolsCloserResource.class);
         router.attach("/drools/fire", DroolsFirerResource.class);
         router.attach("/drools/add", DroolsAdderResource.class);
-
+//        AccessOrigin originFilter = new AccessOrigin(getContext());
+//        originFilter.setNext(router);
         return router;
     }
 

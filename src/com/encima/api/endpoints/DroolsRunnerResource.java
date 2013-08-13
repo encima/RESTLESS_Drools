@@ -1,30 +1,31 @@
 package com.encima.api.endpoints;
 
-import java.util.Collection;
-
-import org.drools.KnowledgeBase;
-import org.drools.KnowledgeBaseFactory;
-import org.drools.builder.KnowledgeBuilder;
-import org.drools.builder.KnowledgeBuilderFactory;
-import org.drools.definition.KnowledgePackage;
-import org.drools.runtime.StatefulKnowledgeSession;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.restlet.ext.jackson.JacksonRepresentation;
+import org.restlet.representation.Representation;
 import org.restlet.resource.Get;
 import org.restlet.resource.ServerResource;
 
-import com.encima.utils.DBTools;
 import com.encima.utils.Drools;
 import com.encima.utils.DroolsTools;
 
 public class DroolsRunnerResource extends ServerResource{
     
-	@Get("text")
+	@Get("json")
     public String start() {
 	   Drools dr = DroolsTools.initDrools();
-//	   DBTools.loadDBRules("drools", "root", "root", 2, dr.getKbase());
 		   
-       System.out.println("Rules loaded from DB");		   
-
-       String name = getQueryValue("name");
-       return "Drools started";
+       System.out.println("Knowledge Base Loaded");		   
+       CharSequence ret = "({\"responseData\":\"hello, world (from the cloud!)\"})";
+       JacksonRepresentation<String> r = new JacksonRepresentation<String>(ret.toString());
+       JSONObject json = new JSONObject();
+       try {
+		json.put("Status", "Drools Started");
+		return json.toString();
+       } catch (JSONException e) {
+		e.printStackTrace();
+       }
+      return json.toString();
     }
 }
