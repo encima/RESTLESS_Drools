@@ -58,9 +58,6 @@ public class RESTApplication extends Application {
         router.attach("/drools/stop", DroolsCloserResource.class);
         router.attach("/drools/fire", DroolsFirerResource.class);
         router.attach("/drools/add", DroolsAdderResource.class);
-        router.attach("/clientaccesspolicy.xml", ClientAccessPolicy.class);
-//        AccessOrigin originFilter = new AccessOrigin(getContext());
-//        originFilter.setNext(router);
         return router;
     }
 

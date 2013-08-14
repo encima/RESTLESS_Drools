@@ -2,18 +2,20 @@ package com.encima.api.endpoints;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
-import org.restlet.representation.Representation;
-import org.restlet.resource.Get;
+import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
+import com.encima.utils.APITools;
 import com.encima.utils.Drools;
 import com.encima.utils.DroolsTools;
 
 public class DroolsRunnerResource extends ServerResource{
     
-	@Get("json")
-    public String start() {
+	@Post("json")
+    public JacksonRepresentation<String> start() {
+		APITools.addAccessToHeader(getResponse());
 	   Drools dr = DroolsTools.initDrools();
 		   
        System.out.println("Knowledge Base Loaded");		   
@@ -22,10 +24,10 @@ public class DroolsRunnerResource extends ServerResource{
        JSONObject json = new JSONObject();
        try {
 		json.put("Status", "Drools Started");
-		return json.toString();
+//		return json.toString();
        } catch (JSONException e) {
 		e.printStackTrace();
        }
-      return json.toString();
+       return new JacksonRepresentation<String>(MediaType.APPLICATION_JSON, "({\"responseData\":\"Drools Started\"})");
     }
 }
