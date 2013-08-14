@@ -40,6 +40,7 @@ import org.restlet.routing.Router;
 import com.encima.api.endpoints.DroolsAdderResource;
 import com.encima.api.endpoints.DroolsCloserResource;
 import com.encima.api.endpoints.DroolsFirerResource;
+import com.encima.api.endpoints.DroolsLoaderResource;
 import com.encima.api.endpoints.DroolsRunnerResource;
 
 public class RESTApplication extends Application {
@@ -58,6 +59,7 @@ public class RESTApplication extends Application {
         router.attach("/drools/stop", DroolsCloserResource.class);
         router.attach("/drools/fire", DroolsFirerResource.class);
         router.attach("/drools/add", DroolsAdderResource.class);
+        router.attach("/drools/load", DroolsLoaderResource.class);
         return router;
     }
 

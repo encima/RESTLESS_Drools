@@ -8,6 +8,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.drools.KnowledgeBase;
 
@@ -42,9 +45,6 @@ public class DBTools {
 		}
 	}
 	
-	public static void update(Connection conn, String query) {
-	}
-	
 	public static void close(Connection conn) {
 		try {
 			conn.close();
@@ -65,26 +65,10 @@ public class DBTools {
 			return 1;
 		}
 	}
-	
-   public static String readFile(String path) {
-	   //reading the file line by line allows more control on the content
-    	StringBuilder contentBuilder = new StringBuilder();
-    	try {
-    	    BufferedReader in = new BufferedReader(new FileReader(path));
-    	    String str;
-    	    while ((str = in.readLine()) != null) {
-//    	    	System.out.println(str);
-    	        contentBuilder.append(str + " ");
-    	    }
-    	    in.close();
-    	} catch (IOException e) {
-    	}
-    	return contentBuilder.toString();
-    }
    
    public static void addDBRulesFromFile(String db, String user, String pwd, String path) {
 		Connection conn = dbConnect(user, pwd, db);
-		String rules = readFile(path);
+		String rules = FileTools.readFileAsString(path);
 		int id = getID(conn, "rules", "id", "MAX");
 		String insert = "INSERT INTO rules VALUE(%d, '%s');";
 		execute(conn, String.format(insert, id, rules));
@@ -108,6 +92,17 @@ public class DBTools {
 			e.printStackTrace();
 		}
 	   close(conn);
+   }
+   
+   public static Date sqlDateToJavaDate(String date) {
+	   SimpleDateFormat format = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+	   Date parsed = null;
+	   try {
+		parsed = format.parse(date);
+	   } catch (ParseException e) {
+		e.printStackTrace();
+	   }
+	   return parsed;
    }
 	
 }
