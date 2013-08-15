@@ -8,8 +8,10 @@ import java.util.Vector;
 
 import org.drools.KnowledgeBase;
 import org.drools.runtime.StatefulKnowledgeSession;
+import org.restlet.data.Form;
 import org.restlet.data.MediaType;
 import org.restlet.ext.jackson.JacksonRepresentation;
+import org.restlet.representation.Representation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
@@ -26,17 +28,26 @@ public class DroolsLoaderResource extends ServerResource{
 	
 	
 	@Post
-	public JacksonRepresentation<String> loadDWC() {
+	public JacksonRepresentation<String> loadDWC(Representation entity) {
 		APITools.addAccessToHeader(getResponse());
-		loadObservations();
+		Form form = new Form(entity);
+		String eventID = form.getFirstValue("id");
+		System.out.println(eventID);
+		if(eventID != null) {
+			loadObservations(Integer.parseInt(eventID));
+		}else{
+			loadObservations(-1);
+		}
 		return new JacksonRepresentation<String>(MediaType.APPLICATION_JSON, "({\"responseData\":\"Observations loaded\"})");
 	}
 	
-	public void loadObservations() {
+	public void loadObservations(int id) {
 		Drools dr = FileTools.deserializeRuleBase();
 		KnowledgeBase kb = dr.getKbase();
 		StatefulKnowledgeSession ksession = kb.newStatefulKnowledgeSession();
 		Connection conn = DBTools.dbConnect("root", "root", "gsn");
+		String query = "SELECT * FROM occurrence";
+			if(id > 0) query = "SELECT * FROM occurrence WHERE EVENTID=" + id + ";";
 		ResultSet dwcs = DBTools.execute(conn, "SELECT * FROM occurrence");
 		try {
 			while(dwcs.next()) {
@@ -48,9 +59,9 @@ public class DroolsLoaderResource extends ServerResource{
 				String basis = dwcs.getString("BASISOFRECORD");
 				int recBy = dwcs.getInt("RECORDEDBY");
 				Occurrence occ = new Occurrence(eventID, eventDate, eventTime, locationID, basis, recBy);
-				Identification id = getIdentification(eventID);
+				Identification ident = getIdentification(eventID);
 				Vector<ImageSet> is = getImageSets(eventID);
-				DarwinCore dwc = new DarwinCore(occ, id, is);
+				DarwinCore dwc = new DarwinCore(occ, ident, is);
 				System.out.println(dwc);
 				System.out.println("Inserting darwin core");
 				ksession.insert(dwc);
