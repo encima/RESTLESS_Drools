@@ -36,6 +36,9 @@ package com.encima.api;
 import org.restlet.Component;
 import org.restlet.data.Protocol;
 
+import com.encima.utils.Drools;
+import com.encima.utils.DroolsTools;
+
 
 public class RESTMain {
 
@@ -49,7 +52,7 @@ public class RESTMain {
         // Attach the sample application.
         component.getDefaultHost().attach("/api",
                 new RESTApplication());
-
+        Drools dr = DroolsTools.initDrools();
         // Start the component.
         component.start();
     }

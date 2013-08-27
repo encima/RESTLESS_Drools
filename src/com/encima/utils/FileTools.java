@@ -8,7 +8,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
+import java.io.ObjectOutputStream; 
+import java.util.Properties;
 
 public class FileTools {
 	
@@ -71,5 +72,19 @@ public class FileTools {
 		}
 		return null;
 		
+	}
+
+	public static Properties getProperties() {
+		Properties prop = new Properties();
+ 
+    	try {
+               //load a properties file
+    		prop.load(new FileInputStream("config.properties"));
+ 			return prop;
+ 
+    	} catch (IOException ex) {
+    		ex.printStackTrace();
+    		return null;
+        }
 	}
 }

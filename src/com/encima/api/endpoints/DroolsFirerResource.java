@@ -12,7 +12,6 @@ import org.restlet.ext.jackson.JacksonRepresentation;
 import org.restlet.resource.Post;
 import org.restlet.resource.ServerResource;
 
-import com.encima.Message;
 import com.encima.dwc.DarwinCore;
 import com.encima.dwc.Identification;
 import com.encima.dwc.ImageSet;
@@ -29,9 +28,6 @@ public class DroolsFirerResource extends ServerResource {
 		Drools dr = FileTools.deserializeRuleBase();
 		KnowledgeBase kb = dr.getKbase();
 		StatefulKnowledgeSession ksession = kb.newStatefulKnowledgeSession();
-		Message msg = new Message();
-	    msg.setType("Test");
-	    ksession.insert(msg);
 	    ksession.insert(addDWC());
 	    ksession.fireAllRules();
 	    return new JacksonRepresentation<String>(MediaType.APPLICATION_JSON, "({\"responseData\":\"Drools Fired\"})");
@@ -44,7 +40,7 @@ public class DroolsFirerResource extends ServerResource {
 	    cal.set(Calendar.DAY_OF_MONTH, 30);
 	    Date dateRep = cal.getTime();
 		try {
-			Occurrence occ = new Occurrence("1", "2012-03-27", "16:42:20", "3", "MovingImage", "3");
+			Occurrence occ = new Occurrence("1", "2012-03-27", "16:42:20", "1", "MovingImage", "3");
 			Identification id = new Identification(1, 2, dateRep, 3);
 			ImageSet is = new ImageSet(1, 1, "/home/encima/pictures/test.jpg");
 			Vector<ImageSet> vis = new Vector<ImageSet>();
@@ -52,7 +48,6 @@ public class DroolsFirerResource extends ServerResource {
 			DarwinCore dwc = new DarwinCore(occ, id, vis);
 			return dwc;
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

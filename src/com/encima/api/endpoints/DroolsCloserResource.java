@@ -22,6 +22,7 @@ public class DroolsCloserResource extends ServerResource {
 		for(KnowledgePackage know : knowledge) {
 			dr.getKbase().removeKnowledgePackage(know.getName());
 		}
+		dr.setStatus("UNLOADED");
 		FileTools.serializeRuleBase(dr);
 		return new JacksonRepresentation<String>(MediaType.APPLICATION_JSON, "({\"responseData\":\"Drools KB Stored. All rules removed\"})");
 	}

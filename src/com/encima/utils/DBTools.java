@@ -1,8 +1,5 @@
 package com.encima.utils;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -10,7 +7,10 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.drools.KnowledgeBase;
 
@@ -103,6 +103,22 @@ public class DBTools {
 		e.printStackTrace();
 	   }
 	   return parsed;
-   }
+   } 
+   
+   public static List<String> getLocationDescription(int locID) {
+		Connection cnx = dbConnect("root", "root", "gsn");
+		ResultSet rs = execute(cnx, String.format("SELECT * FROM location WHERE id=%d;", locID));
+		ArrayList<String> descrip = new ArrayList<String>();
+		try {
+			if(rs.next()) {
+				return Arrays.asList(rs.getString("description").split(","));
+			}else{
+				return null;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 	
 }

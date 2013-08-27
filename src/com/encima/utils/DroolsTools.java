@@ -19,7 +19,7 @@ public class DroolsTools {
 
 	public static Drools initDrools() {
 		KnowledgeBase kbase = KnowledgeBaseFactory.newKnowledgeBase();
-		Drools dr = new Drools(kbase);
+		Drools dr = new Drools(kbase, "LOADED");
         return dr;
 	}
 	
@@ -29,11 +29,13 @@ public class DroolsTools {
         kbuilder.add(myResource, ResourceType.DRL);
 		if ( kbuilder.hasErrors() ) {
 		   System.err.println( kbuilder.getErrors().toString() );
+		}else{
+			Drools dr = FileTools.deserializeRuleBase();
+			dr.setStatus("RULES LOADED");
+			dr.getKbase().addKnowledgePackages(kbuilder.getKnowledgePackages());
+	//		dr.setKsession(dr.getKbase().newStatefulKnowledgeSession());
+			FileTools.serializeRuleBase(dr);
 		}
-		Drools dr = FileTools.deserializeRuleBase();
-		dr.getKbase().addKnowledgePackages(kbuilder.getKnowledgePackages());
-//		dr.setKsession(dr.getKbase().newStatefulKnowledgeSession());
-		FileTools.serializeRuleBase(dr);
 	}
 	
 }

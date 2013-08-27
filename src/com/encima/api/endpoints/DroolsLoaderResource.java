@@ -47,7 +47,7 @@ public class DroolsLoaderResource extends ServerResource{
 		StatefulKnowledgeSession ksession = kb.newStatefulKnowledgeSession();
 		Connection conn = DBTools.dbConnect("root", "root", "gsn");
 		String query = "SELECT * FROM occurrence";
-			if(id > 0) query = "SELECT * FROM occurrence WHERE EVENTID=" + id + ";";
+		if(id > 0) query = "SELECT * FROM occurrence WHERE EVENTID=" + id + ";";
 		ResultSet dwcs = DBTools.execute(conn, "SELECT * FROM occurrence");
 		try {
 			while(dwcs.next()) {
