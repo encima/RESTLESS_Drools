@@ -32,7 +32,7 @@ public class DBTools {
 		ResultSet rs;
 		try {
 			stmt = conn.createStatement();
-			System.out.println(query);
+//			System.out.println(query);
 			Boolean res = stmt.execute(query);
 			if(res)
 				rs = stmt.getResultSet();

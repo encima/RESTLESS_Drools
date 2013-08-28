@@ -2,10 +2,14 @@ package com.encima.utils;
 
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Properties;
 
 public class TimeTools {
 	
 	public static String checkTimePeriod(Date time) {
+//		Properties prop = FileTools.getProperties();
+		
+//		int morning = Integer.parseInt(prop.getProperty("morning", "6"));
 		Calendar mornStart = Calendar.getInstance();
 		mornStart.setTime(time);
 		mornStart.set(Calendar.HOUR_OF_DAY, 6);

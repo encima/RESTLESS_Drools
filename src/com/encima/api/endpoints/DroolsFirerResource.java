@@ -37,7 +37,7 @@ public class DroolsFirerResource extends ServerResource {
 		Calendar cal = Calendar.getInstance();
 	    cal.set(Calendar.YEAR, 2012);
 	    cal.set(Calendar.MONTH, 3);
-	    cal.set(Calendar.DAY_OF_MONTH, 30);
+	    cal.set(Calendar.DAY_OF_MONTH, 30); 
 	    Date dateRep = cal.getTime();
 		try {
 			Occurrence occ = new Occurrence("1", "2012-03-27", "16:42:20", "1", "MovingImage", "3");

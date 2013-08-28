@@ -69,7 +69,7 @@ public class DroolsLoaderResource extends ServerResource{
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		ksession.fireAllRules();
+//		ksession.fireAllRules();
 	}
 	
 	public Identification getIdentification(int eventID){
